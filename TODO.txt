@@ -1,0 +1,4 @@
+// Todo 1. Add google sign in.
+// Todo 2. Add email verify.
+// Todo 3. Add some images to login / register page.
+// Todo add email type to text field in login / sign up page.

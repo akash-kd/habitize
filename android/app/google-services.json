@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "558553186033",
+    "project_id": "habitize-70909",
+    "storage_bucket": "habitize-70909.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558553186033:android:3a37fa451e470a94243350",
+        "android_client_info": {
+          "package_name": "com.apps.habitize"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558553186033-rd776lcibbsqb7ed6le4e5u5pm0vunpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl10piILQYBS18NZlKVBDm1IaouYk1k0o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558553186033-rd776lcibbsqb7ed6le4e5u5pm0vunpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
