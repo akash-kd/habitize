@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fast_color_picker/fast_color_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,16 +17,36 @@ class AddPage extends StatefulWidget {
 }
 
 class _AddPageState extends State<AddPage> {
-  // ! TEXT CONTROLLER
-  final TextEditingController targetController = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
 
-  // * data from various componenent
-  String targetType = "Days";
+  // * Flutter boiler plate for push local notication from the app to use
+  // !this implies for only android and not for IOS
+  late FlutterLocalNotificationsPlugin localNotification;
+  void initState() {
+    super.initState();
+    var androidInit = new AndroidInitializationSettings('ic_launcher');
+    var initSetting = InitializationSettings(android: androidInit);
+    localNotification = new FlutterLocalNotificationsPlugin();
+    localNotification.initialize(initSetting);
+  }
+
+  // * init variable for storing the recieved data from various componentes
   late String notify1;
   late String? notify2 = "0";
   late String? notify3 = "0";
+
+  late var time1;
+  late var time2;
+  late var t;
+
+
+  // ! TEXT CONTROLLER
+  final TextEditingController targetController = TextEditingController();
+
+  // * data from various componenent
+  String targetType = "Days";
+
   late String themeColor;
+  final TextEditingController titleController = TextEditingController();
 
   // * getting target type in this function from component
   void setTargetTpye(String text) {
@@ -73,18 +94,21 @@ class _AddPageState extends State<AddPage> {
     print(notify3);
     print(themeColor);
     CollectionReference users = fireDb.collection(user!.email ?? "TRASH");
-    users
-        .add({
-          'title': "fullname", // John Doe
-          'target': " company", // Stokes and Sons
-          'target_type': "age",
-          'noty1': "age",
-          'noty2': "age",
-          'noty3': "age",
-          'themeColor': "Colors"
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+    users.add({
+      'title': titleController.text, // John Doe
+      'target': targetController.text, // Stokes and Sons
+      'target_type': targetType,
+      'notify1': notify1,
+      'notify2': notify2,
+      'notify3': notify3,
+      'themeColor': themeColor
+    }).then((value) {
+      print(value);
+      print('Habit has been added');
+      Navigator.pushNamed(context, '/home');
+    }).catchError((error) {
+      print(error.message);
+    });
   }
 
   @override
@@ -198,6 +222,7 @@ class _AddPageState extends State<AddPage> {
 // !THEME CHOOSER
 class ThemeChooser extends StatefulWidget {
   const ThemeChooser({Key? key, required this.setThemeColor}) : super(key: key);
+
   final ValueChanged<String> setThemeColor;
 
   @override
@@ -206,6 +231,7 @@ class ThemeChooser extends StatefulWidget {
 
 class _ThemeChooserState extends State<ThemeChooser> {
   late Color _color = Colors.deepPurpleAccent;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -216,13 +242,17 @@ class _ThemeChooserState extends State<ThemeChooser> {
           "Theme Color",
           style: GoogleFonts.firaSansCondensed(fontWeight: FontWeight.w500),
         ),
+        SizedBox(
+          height: 8,
+        ),
         FastColorPicker(
           selectedColor: _color,
           onColorSelected: (color) {
             setState(() {
               _color = color;
-              String c = color.toString().replaceRange(0, 11, "");
-              c.replaceAll(")", "");
+              String c = color.toString().replaceRange(0, 10, "");
+              c = c.substring(0, c.length - 1);
+              print(c);
               widget.setThemeColor(c);
             });
           },
@@ -250,11 +280,11 @@ class Notify extends StatefulWidget {
 }
 
 class _NotifyState extends State<Notify> {
+  bool notify2Visible = false;
+  bool notify3Visible = false;
   String? timeSelected1;
   String? timeSelected2;
   String? timeSelected3;
-  bool notify2Visible = false;
-  bool notify3Visible = false;
 
   Future<void> selectTime(BuildContext context) async {
     var picked = await showTimePicker(
@@ -489,8 +519,8 @@ class TargetField extends StatelessWidget {
     required this.setTargetType,
   }) : super(key: key);
 
-  final TextEditingController targetController;
   final ValueChanged<String> setTargetType;
+  final TextEditingController targetController;
 
   @override
   Widget build(BuildContext context) {
@@ -599,5 +629,19 @@ class TargetField extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class Notification extends StatefulWidget {
+  const Notification({Key? key}) : super(key: key);
+
+  @override
+  _NotificationState createState() => _NotificationState();
+}
+
+class _NotificationState extends State<Notification> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

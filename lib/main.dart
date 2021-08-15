@@ -6,7 +6,6 @@ import 'package:habitize/home.dart';
 import 'package:habitize/loginForm.dart';
 import 'package:habitize/registerForm.dart';
 
-
 User? user = FirebaseAuth.instance.currentUser;
 
 Widget isUserCreated() {
@@ -25,6 +24,7 @@ Future<void> main() async {
   // Hive initialization
   // await Hive.initFlutter();
   // await Hive.openBox('user');
+  
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
