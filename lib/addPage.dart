@@ -1,11 +1,10 @@
+// imports
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fast_color_picker/fast_color_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:habitize/main.dart';
-
-// import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 FirebaseFirestore fireDb = FirebaseFirestore.instance;
 
@@ -18,8 +17,7 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
 
-  // * Flutter boiler plate for push local notication from the app to use
-  // !this implies for only android and not for IOS
+  // Boiler plate code for pushing flutter local notifications
   late FlutterLocalNotificationsPlugin localNotification;
   void initState() {
     super.initState();
@@ -28,55 +26,41 @@ class _AddPageState extends State<AddPage> {
     localNotification = new FlutterLocalNotificationsPlugin();
     localNotification.initialize(initSetting);
   }
+  
 
-  // * init variable for storing the recieved data from various componentes
   late String notify1;
   late String? notify2 = "0";
   late String? notify3 = "0";
-
-  late var time1;
-  late var time2;
-  late var t;
-
-
-  // ! TEXT CONTROLLER
   final TextEditingController targetController = TextEditingController();
-
-  // * data from various componenent
-  String targetType = "Days";
-
-  late String themeColor;
   final TextEditingController titleController = TextEditingController();
+  String targetType = "Days";
+  late String themeColor;
+  
 
-  // * getting target type in this function from component
   void setTargetTpye(String text) {
     setState(() {
       targetType = text;
     });
   }
 
-  // * getting the time of the notification1 from component
   void setNotify1(String text) {
     setState(() {
       notify1 = text;
     });
   }
 
-  // * getting the time of the notification2 from component
   void setNotify2(String text) {
     setState(() {
       notify2 = text;
     });
   }
 
-  // * getting the time of the notification3 from component
   void setNotify3(String text) {
     setState(() {
       notify3 = text;
     });
   }
 
-  // * getting color from the component
   void setThemeColor(String color) {
     setState(() {
       themeColor = color;
@@ -84,19 +68,21 @@ class _AddPageState extends State<AddPage> {
   }
 
   void save() {
-    // ^ MAIN PICTURE
 
-    print(titleController.text);
-    print(targetController.text);
-    print(targetType);
-    print(notify1);
-    print(notify2);
-    print(notify3);
-    print(themeColor);
+    // //For debugging purposes 
+    // print(titleController.text);
+    // print(targetController.text);
+    // print(targetType);
+    // print(notify1);
+    // print(notify2);
+    // print(notify3);
+    // print(themeColor);
+
+    // Storing the data from app to firebase firestore in the id of the user's email
     CollectionReference users = fireDb.collection(user!.email ?? "TRASH");
     users.add({
-      'title': titleController.text, // John Doe
-      'target': targetController.text, // Stokes and Sons
+      'title': titleController.text,
+      'target': targetController.text,
       'target_type': targetType,
       'notify1': notify1,
       'notify2': notify2,
@@ -109,14 +95,17 @@ class _AddPageState extends State<AddPage> {
     }).catchError((error) {
       print(error.message);
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
+
+    // Scaffold
     return Scaffold(
       backgroundColor: Colors.grey[100],
 
-      // ! APP BAR
+      // Appbar
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.deepPurpleAccent,
@@ -132,7 +121,7 @@ class _AddPageState extends State<AddPage> {
         ],
       ),
 
-      // !FLOATING ACTION BUTTON
+      //Floating Action button
       floatingActionButton: FloatingActionButton(
         onPressed: save,
         child: Icon(Icons.add_rounded),
@@ -140,12 +129,13 @@ class _AddPageState extends State<AddPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+
+      // Main Body
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // ! TITLE FIELD
             TextFormField(
               controller: titleController,
               style: GoogleFonts.firaSansCondensed(fontWeight: FontWeight.w500),
@@ -182,33 +172,24 @@ class _AddPageState extends State<AddPage> {
                         BorderSide(color: Colors.redAccent, width: 2.0)),
               ),
             ),
-
             SizedBox(
               height: 16,
             ),
-
-            // ! TARGET FIELD
             TargetField(
               targetController: targetController,
               setTargetType: setTargetTpye,
             ),
-
             SizedBox(
               height: 16,
             ),
-
-            // ! NOTIFICATION FIELD
             Notify(
               setNotify1: setNotify1,
               setNotify2: setNotify2,
               setNotify3: setNotify3,
             ),
-
             SizedBox(
               height: 16,
             ),
-
-            //! THEME CHOOSE
             ThemeChooser(
               setThemeColor: setThemeColor,
             ),
@@ -219,7 +200,6 @@ class _AddPageState extends State<AddPage> {
   }
 }
 
-// !THEME CHOOSER
 class ThemeChooser extends StatefulWidget {
   const ThemeChooser({Key? key, required this.setThemeColor}) : super(key: key);
 
@@ -262,7 +242,6 @@ class _ThemeChooserState extends State<ThemeChooser> {
   }
 }
 
-// ! NOTFICATION FIELD
 class Notify extends StatefulWidget {
   const Notify({
     Key? key,
@@ -441,8 +420,6 @@ class _NotifyState extends State<Notify> {
             SizedBox(
               width: 8,
             ),
-
-            //! NOTIFIER TWO 2
             Visibility(
               visible: notify2Visible,
               child: Row(
@@ -465,8 +442,6 @@ class _NotifyState extends State<Notify> {
                 ],
               ),
             ),
-
-            //! NOTIFIER THREE 3
             Visibility(
               visible: notify3Visible,
               child: Row(
@@ -489,7 +464,6 @@ class _NotifyState extends State<Notify> {
                 ],
               ),
             ),
-
             TextButton(
               onPressed: () {
                 setState(() {
@@ -511,7 +485,6 @@ class _NotifyState extends State<Notify> {
   }
 }
 
-// ! TARGET AN TARGET TPYE FIELDS
 class TargetField extends StatelessWidget {
   const TargetField({
     Key? key,
@@ -527,7 +500,6 @@ class TargetField extends StatelessWidget {
     return IntrinsicHeight(
       child: Row(
         children: [
-          //! TARGET FIELD
           Flexible(
               child: TextFormField(
             controller: targetController,
@@ -564,12 +536,9 @@ class TargetField extends StatelessWidget {
                   borderSide: BorderSide(color: Colors.redAccent, width: 2.0)),
             ),
           )),
-
           SizedBox(
             width: 16,
           ),
-
-          //! TARGET TYPE
           Flexible(
             child: DropdownButtonFormField<String>(
               value: "Days",

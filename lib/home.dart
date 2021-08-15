@@ -2,15 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:habitize/homeContainer.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+
+// Firebase current user
 User? user = FirebaseAuth.instance.currentUser;
 
+//Local storage
 var userDB = Hive.box("user");
 
+
+// Home page after user login 
 class Home extends StatefulWidget {
   const Home({
     Key? key,
@@ -23,10 +27,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+
+    // scaffold
     return Scaffold(
       backgroundColor: Colors.grey[100],
 
-      //! APP BAR
+      // Appbar
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.deepPurpleAccent,
@@ -36,18 +42,14 @@ class _HomeState extends State<Home> {
               fontWeight: FontWeight.w900, letterSpacing: 1.0),
         ),
         automaticallyImplyLeading: false,
-
-        //Add action button
-        // ^ onPressed => addHabit()
-
-        //! ACTION BUTTONS
-        // * the Widgets that come after the title with space in btw as expanded
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.pushNamed(context, '/addHabit'),
               icon: Icon(Icons.add_rounded)),
         ],
       ),
+
+      //Body
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListUI(),
@@ -56,9 +58,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-// !MAIN BODY OF HOME PAGE
-// * This Widget retrieves the data from firebase firestore, Streambuild
-// * uses the strem from firebase and convert that list of HabitWidget
+
+
+
 
 class ListUI extends StatefulWidget {
   @override

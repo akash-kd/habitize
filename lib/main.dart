@@ -16,15 +16,10 @@ Widget isUserCreated() {
   }
 }
 
-// ! Main function : the first function to run
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  // Hive initialization
-  // await Hive.initFlutter();
-  // await Hive.openBox('user');
-  
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -35,16 +30,16 @@ Future<void> main() async {
       primaryColor: Colors.deepPurpleAccent,
     ),
     routes: {
-      // * Redirects to Login Page
+      
       '/': (context) => isUserCreated(),
 
-      // * Redirects to home
+      
       '/home': (context) => const Home(),
 
-      // * Add Page
+      
       '/addHabit': (context) => AddPage(),
 
-      // * Redirects to Sign Up page
+      
       '/register': (context) => RegisterForm(),
     },
   ));

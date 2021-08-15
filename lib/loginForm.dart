@@ -13,13 +13,16 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+
+  //Controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  // Space btw widgets
   final double _space = 16;
-  String _text = "";
+  // error text and visibilty and method to update the error
+  String _text = ""; 
   bool _visibleState = false;
-
   void updateError(String text) {
     setState(() {
       _text = text;
@@ -37,8 +40,11 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    // Scaffold
     return Scaffold(
       backgroundColor: Colors.grey[100],
+
+      // Appbar
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.deepPurpleAccent,
@@ -59,6 +65,8 @@ class _LoginFormState extends State<LoginForm> {
             onPressed: () => print("Setting clicked"),
             icon: Icon(Icons.settings_rounded)),
       ),
+
+      //Main Body
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

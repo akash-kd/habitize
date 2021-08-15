@@ -31,7 +31,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   void dispose() {
-    // Clean up the controller when the Widget is disposed
+    
     emailController.dispose();
     passwordController.dispose();
     fullnameController.dispose();
@@ -134,7 +134,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
-// ignore: camel_case_types
+
 class SignIn_Button extends StatelessWidget {
   final ValueChanged<String> updateError;
   const SignIn_Button({
@@ -162,7 +162,7 @@ class SignIn_Button extends StatelessWidget {
 
     _user!.updateDisplayName(fullnameController.text);
 
-    // ignore: unnecessary_null_comparison
+    
     if (_user != null) {
       return _user;
     } else {
